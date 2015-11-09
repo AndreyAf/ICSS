@@ -1,0 +1,67 @@
+<section data-ng-controller="IndexController">
+    <uib-carousel interval="myInterval" no-wrap="noWrapSlides">
+        <uib-slide ng-repeat="slide in slides" active="slide.active">
+            <img ng-src="{{slide.image}}" style="margin:auto;">
+
+            <div class="carousel-caption">
+                <h4>Slide {{$index}}</h4>
+
+                <p>{{slide.text}}</p>
+            </div>
+        </uib-slide>
+    </uib-carousel>
+
+    <legend>Using latest technology</legend>
+    <div class="col-sm-3" ng-repeat="tech in technologies">
+        <img ng-src="{{tech.logoImg}}" alt="{{tech.title}}" class="img-responsive">
+    </div>
+
+    <legend id="team">The Team</legend>
+    <div class="col-md-6 text-center">
+        <label>Andrey Pospelov</label>
+        <img src="/system/assets/img/logo_mongodb.png" alt="AngularJS" class="img-responsive">
+    </div>
+    <div class="col-md-6 text-center">
+        <label>Nick Yeshaev</label>
+        <img src="/system/assets/img/logo_angularjs.png" alt="AngularJS" class="img-responsive">
+    </div>
+
+    <legend id="about_us">About us</legend>
+
+    <div class="col-md-12">bla bla bla</div>
+
+    <legend id="contact_us">Contact Us</legend>
+
+    <div class="col-md-6 col-md-offset-3 form-box">
+        <div class="form-top">
+            <div class="form-top-left">
+                <h3>Contact us</h3>
+
+                <p>Fill in the form below to send us a message:</p>
+            </div>
+            <div class="form-top-right">
+                <i class="fa fa-envelope"></i>
+            </div>
+        </div>
+        <div class="form-bottom contact-form">
+            <form role="form" >
+                <div class="form-group">
+                    <label class="sr-only" for="contact-email">Email</label>
+                    <input type="text" name="email" placeholder="Email..." class="contact-email form-control"
+                           id="contact-email">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="contact-subject">Subject</label>
+                    <input type="text" name="subject" placeholder="Subject..." class="contact-subject form-control"
+                           id="contact-subject">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="contact-message">Message</label>
+                    <textarea name="message" placeholder="Message..." class="contact-message form-control"
+                              id="contact-message"></textarea>
+                </div>
+                <button type="submit" class="btn">Send message</button>
+            </form>
+        </div>
+    </div>
+</section>

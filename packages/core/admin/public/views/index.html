@@ -1,0 +1,34 @@
+<div id="admin-menu" ng-controller="AdminController" ng-show="user.loggedin">
+    <div ng-init="openWide=false" ng-class="{'opened': openWide}">
+        <ul class="nav">
+            <!-- TODO: add client menu, add employee menu and add company menu-->
+            <li class="stable"
+                ng-repeat="item in menus.main"
+                ui-route="/{{item.link}}"
+                ng-class="{active: $uiRoute}"
+                ui-sref='{{item.link}}'>
+                <a href="">
+                    <img ng-show="item.icon" ng-src="{{item.icon}}">
+                    <img ng-show="!item.icon" src="admin/assets/img/icons/settings.png">
+                </a>
+                <div class="showbox" mean-token="item.title">{{item.title}}</div>
+            </li>
+            <li class="stable"
+                ng-show="user.isAdmin"
+                ng-repeat="item in menus.admin"
+                ui-route="/{{item.link}}"
+                ng-class="{active: $uiRoute}"
+                ui-sref='{{item.link}}'>
+                <a href="">
+                    <img ng-show="item.icon" ng-src="{{item.icon}}">
+                    <img ng-show="!item.icon" src="admin/assets/img/icons/settings.png">
+                </a>
+                <div class="showbox" mean-token="item.title">{{item.title}}</div>
+            </li>
+        </ul>
+        <div class="glyphicon open-icon"
+             ng-click="openWide=!openWide"
+             ng-class="{true: 'glyphicon-menu-left', false: 'glyphicon-menu-right'}[openWide]">
+        </div>
+    </div>
+</div>

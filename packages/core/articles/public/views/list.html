@@ -1,0 +1,44 @@
+<section data-ng-controller="ArticlesController" data-ng-init="find()">
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <div class="panel-heading-title">
+                <span class="glyphicon glyphicon-list"></span>
+                <span style="padding-left:10px;">Articles</span>
+                <a style="margin: auto 0;" ui-sref="create article">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+            <div class="input-group pull-right" style="width: 250px;">
+                <input type="text" class="form-control " data-ng-model="searchText" placeholder="Search" ng-change="searchData()"/>
+                <span class="input-group-addon glyphicon glyphicon-search" style="top: 0;"></span>
+            </div>
+        </div>
+        <table ng-table="tableParams" class="table table-responsive table-striped">
+            <tr ng-repeat="article in $data | filter: searchText">
+                <td title="'Title'" filter="{ title: 'text'}" sortable="'title'">{{article.title}}</td>
+                <td title="'User name'" filter="{ name: 'text'}" sortable="'name'">{{article.user.name}}</td>
+                <td title="'Created at'" filter="{ created: 'text'}" sortable="'created'">{{article.created |
+                    date:'medium'}}
+                </td>
+                <td>
+        <span>
+            <a class="btn" href="/articles/{{article._id}}">
+                <i class="glyphicon glyphicon-list"></i>
+            </a>
+          <a class="btn" href="/articles/{{article._id}}/edit">
+              <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(article);">
+              <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+                </td>
+            </tr>
+        </table>
+
+        <div data-ng-hide="!articles || articles.length" class="panel-body"><h1>No articles yet. <br> Why don't you <a
+                href="/articles/create">Create
+            One</a>?</h1></div>
+        <div class="panel-footer"></div>
+    </div>
+</section>
