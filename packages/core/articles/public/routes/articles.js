@@ -6,41 +6,31 @@ angular.module('mean.articles').config(['$stateProvider',
 
     // states for my app
     $stateProvider
-      .state('all articles', {
+      .state('articles', {
         url: '/articles',
-        templateUrl: '/articles/views/list.html',
+        abstract: true,
+        template: '<ui-view/>',
         resolve: {
           loggedin: function(MeanUser) {
             return MeanUser.checkLoggedin();
           }
         }
       })
-      .state('create article', {
-        url: '/articles/create',
-        templateUrl: '/articles/views/create.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
+      .state('articles.list', {
+        url: '/',
+        templateUrl: '/articles/views/list.html'
       })
-      .state('edit article', {
-        url: '/articles/:articleId/edit',
-        templateUrl: '/articles/views/edit.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
+      .state('articles.create', {
+        url: '/create',
+        templateUrl: '/articles/views/create.html'
       })
-      .state('article by id', {
-        url: '/articles/:articleId',
-        templateUrl: '/articles/views/view.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
+      .state('articles.edit', {
+        url: '/edit/:articleId',
+        templateUrl: '/articles/views/edit.html'
+      })
+      .state('articles.view', {
+        url: '/view/:articleId',
+        templateUrl: '/articles/views/view.html'
       });
   }
 ]);

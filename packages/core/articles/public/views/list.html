@@ -4,7 +4,7 @@
             <div class="panel-heading-title">
                 <span class="glyphicon glyphicon-list"></span>
                 <span style="padding-left:10px;">Articles</span>
-                <a style="margin: auto 0;" ui-sref="create article">
+                <a style="margin: auto 0;" ui-sref="articles.create">
                     <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </div>
@@ -22,10 +22,10 @@
                 </td>
                 <td>
         <span>
-            <a class="btn" href="/articles/{{article._id}}">
+            <a class="btn" ui-sref="articles.view({articleId : article._id})"">
                 <i class="glyphicon glyphicon-list"></i>
             </a>
-          <a class="btn" href="/articles/{{article._id}}/edit">
+          <a class="btn" ui-sref="articles.edit({articleId : article._id})">
               <i class="glyphicon glyphicon-edit"></i>
           </a>
           <a class="btn" data-ng-click="remove(article);">
