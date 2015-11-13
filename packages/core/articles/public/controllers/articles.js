@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.articles', []).controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Global', 'Articles', 'MeanUser', 'Circles',
-    function ($scope, $stateParams, $location, Global, Articles, MeanUser, Circles) {
+angular.module('mean.articles', []).controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Global', 'Articles', 'MeanUser', 'Circles','NgTableParams',
+    function ($scope, $stateParams, $location, Global, Articles, MeanUser, Circles,NgTableParams) {
         $scope.global = Global;
 
         $scope.selectedItems = {};
@@ -93,13 +93,13 @@ angular.module('mean.articles', []).controller('ArticlesController', ['$scope', 
                 });
 
 
-                //$scope.tableParams = new NgTableParams({
-                //    page: 1,   // show first page
-                //    count: 100  // count per page
-                //}, {
-                //    counts: [], // hide page counts control
-                //    data: $scope.articles
-                //});
+                $scope.tableParams = new NgTableParams({
+                    page: 1,   // show first page
+                    count: 100  // count per page
+                }, {
+                    counts: [], // hide page counts control
+                    data: $scope.articles
+                });
             });
         };
 
