@@ -84,22 +84,12 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
             }
         };
 
-
         $scope.find = function () {
             Articles.query(function (articles) {
                 $scope.articles = articles;
                 angular.forEach($scope.articles, function(article){
                     $scope.selectedItems[article.id] = false;
                 });
-
-
-                //$scope.tableParams = new NgTableParams({
-                //    page: 1,   // show first page
-                //    count: 100  // count per page
-                //}, {
-                //    counts: [], // hide page counts control
-                //    data: $scope.articles
-                //});
             });
         };
 
@@ -111,6 +101,49 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
             });
         };
 
+        $scope.gridOptions = {
+            enableFiltering: true,
+            useExternalFiltering: true,
+            enableHorizontalScrollbar: 2,
+                columnDefs: [
+                { name: 'title' },
+                { name: 'content', enableFiltering: false },
+                { name: 'created'}
+            ],
+            onRegisterApi: function( gridApi ) {
+
+                $scope.gridApi = gridApi;
+                $scope.gridApi.core.on.filterChanged( $scope, function() {
+                    var grid = this.grid;
+                    if( grid.columns[1].filters[0].term === 'male' ) {
+                        $http.get('/data/100_male.json')
+                            .success(function(data) {
+                                $scope.gridOptions.data = data;
+                            });
+                    } else if ( grid.columns[1].filters[0].term === 'female' ) {
+
+                    } else {
+                        $http.get('/data/100.json')
+                            .success(function(data) {
+                                $scope.gridOptions.data = data;
+                            });
+                    }
+                });
+            }
+        };
+
+
+        $scope.refreshData = function(search){
+
+            $scope.gridOptions.data = $scope.articles;
+
+            while (search) {
+                var oSearchArray = search.split(' ');
+                $scope.gridOptions.data = $filter('filter')($scope.gridOptions.data, oSearchArray[0], undefined);
+                oSearchArray.shift();
+                search = (oSearchArray.length !== 0) ? oSearchArray.join(' ') : '';
+            }
+        }
 
     }
 ]);

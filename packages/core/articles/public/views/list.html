@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div ui-grid="{ data: articles }" class="myGrid"></div>
+        <div ui-grid="{ data: articles }" class="myGrid" ng-change="refreshData(search)"></div>
 
         <!--<table ng-table="tableParams" class="table table-responsive table-striped">-->
             <!--<tr ng-repeat="article in $data | filter: searchText">-->
