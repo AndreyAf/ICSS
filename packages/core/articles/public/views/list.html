@@ -1,4 +1,4 @@
-<section data-ng-controller="ArticlesController" data-ng-init="find()">
+<section data-ng-controller="ArticlesController">
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
             <div class="panel-heading-title">
@@ -22,7 +22,7 @@
                 </td>
                 <td>
         <span>
-            <a class="btn" ui-sref="articles.view({articleId : article._id})"">
+            <a class="btn" ui-sref="articles.view({articleId : article._id})">
                 <i class="glyphicon glyphicon-list"></i>
             </a>
           <a class="btn" ui-sref="articles.edit({articleId : article._id})">
