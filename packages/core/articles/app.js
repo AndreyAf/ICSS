@@ -18,18 +18,15 @@ Articles.register(function (app, auth, database, circles, swagger) {
 
     Articles.aggregateAsset('css', 'articles.css');
 
-    Articles.aggregateAsset('css', '../lib/ng-table/dist/ng-table.min.css', {
-        weight: 1,
-        absolute: false,
+    Articles.aggregateAsset('css', '../lib/angular-ui-grid/ui-grid.min.css', {
         global: true
     });
 
-    Articles.aggregateAsset('js', '../lib/ng-table/dist/ng-table.min.js', {weight: 2,
-        absolute: false,
+    Articles.aggregateAsset('js', '../lib/angular-ui-grid/ui-grid.min.js', {
         global: true
     });
 
-    Articles.angularDependencies(["ngTable"]);
+    Articles.angularDependencies(["ui.grid"]);
 
     //We are adding a link to the main menu for all authenticated users
     Articles.menus.add({
@@ -48,25 +45,6 @@ Articles.register(function (app, auth, database, circles, swagger) {
         subtype: 'article'
     });
 
-    /*
-     //Uncomment to use. Requires meanio@0.3.7 or above
-     // Save settings with callback
-     // Use this for saving data from administration pages
-     Articles.settings({'someSetting':'some value'},function (err, settings) {
-     //you now have the settings object
-     });
-
-     // Another save settings example this time with no callback
-     // This writes over the last settings.
-     Articles.settings({'anotherSettings':'some value'});
-
-     // Get settings. Retrieves latest saved settings
-     Articles.settings(function (err, settings) {
-     //you now have the settings object
-     });
-     */
-
-    // Only use swagger.add if /docs and the corresponding files exists
     swagger.add(__dirname);
 
     return Articles;

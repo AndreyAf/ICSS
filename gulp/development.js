@@ -82,9 +82,7 @@ gulp.task('coffee', function() {
 });
 
 gulp.task('watch', function () {
-  plugins.livereload.listen({interval:500});
-
-  gulp.watch(paths.coffee,['coffee']);
+  plugins.livereload.listen({interval:500}); gulp.watch(paths.coffee,['coffee']);
   gulp.watch(paths.js, ['jshint']);
   gulp.watch(paths.css, ['csslint']).on('change', plugins.livereload.changed);
   gulp.watch(paths.less, ['less']);

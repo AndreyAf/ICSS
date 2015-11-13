@@ -1,6 +1,12 @@
 h1 {
-	text-align: center
+    text-align: center
 }
+
 ul.articles li:not(:last-child) {
-	border-bottom: 1px solid #ccc
+    border-bottom: 1px solid #ccc
+}
+
+.myGrid {
+    width: 100%;
+    height: 300px;
 }
