@@ -10,12 +10,13 @@
                 </a>
             </div>
             <div class="input-group pull-right">
-                <input type="text" class="form-control" ng-model="searchText" placeholder="Search" ng-change="searchData()"/>
+                <input type="text" class="form-control" ng-model="searchText" placeholder="Search"
+                       ng-change="searchData()"/>
                 <span class="input-group-addon glyphicon glyphicon-search"></span>
             </div>
         </div>
-
-        <div ui-grid="gridOptions" class="myGrid" ng-change="refreshData(search)"></div>
+        <!--TODO: ng-change="refreshData(search)-->
+        <div ui-grid="gridOptions" class="myGrid"></div>
 
         <div ng-hide="!items || items.length" class="panel-body">
             <h1>No articles yet. <br> Why don't you <a ui-sref="create article">CreateOne</a>?</h1>

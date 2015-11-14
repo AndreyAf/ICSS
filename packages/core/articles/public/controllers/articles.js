@@ -34,6 +34,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
         $scope.searchText = '';
 
         $scope.item = {};
+        $scope.index = null;
         $scope.items = Model.query(
             function (items) {
                 $scope.items = items;
@@ -51,6 +52,10 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 var item = new Model($scope.item);
 
                 item.$save(function (response) {
+
+                    $scope.gridOptions.data.push(response);
+
+                    // Go to view
                     $location.path('/' +$scope.modelName.plural.toLowerCase() + '/' + response._id);
                 });
 
@@ -74,17 +79,18 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                     }, function (item) {
                         item.$remove(function (response) {
 
-                            for (var i in $scope.items) {
-                                if ($scope.items[i] === article) {
-                                    $scope.items.splice(i, 1);
-                                }
-                            }
+                            $scope.gridOptions.data.splice(index, 1);
+
+                            // Go to list
                             $location.path('/' +$scope.modelName.plural.toLowerCase());
                         });
                     });
 
                 } else {
+                    // TODO : rewrite
                     $scope.item.$remove(function (response) {
+                        $scope.gridOptions.data.splice(index, 1);
+
                         $location.path('/' +$scope.modelName.plural.toLowerCase());
                     });
                 }
@@ -101,9 +107,14 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 if (!item.updated) {
                     item.updated = [];
                 }
+
                 item.updated.push(new Date().getTime());
 
                 item.$update(function () {
+                    $scope.gridOptions.data =Model.query(
+                        function (items) {
+                           return items;
+                        });
                     $location.path('/' +$scope.modelName.plural.toLowerCase()+'/' + item._id);
                 });
             } else {
@@ -168,7 +179,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                     '   <a class="btn" ui-sref="edit ' + $scope.modelName.single.toLowerCase() + '({id : row.entity._id})" uib-tooltip="Edit item">' +
                     '       <i class="glyphicon glyphicon-edit"></i>' +
                     '   </a>' +
-                    '   <a class="btn" data-ng-click="remove(row.entity._id);" uib-tooltip="Delete item">' +
+                    '   <a class="btn" ng-click="grid.appScope.remove(row.entity._id)" uib-tooltip="Delete item">' +
                     '       <i class="glyphicon glyphicon-trash"></i>' +
                     '   </a>' +
                     '</div>'
@@ -176,6 +187,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
             ]
         };
 
+        // TODO: rewrite
         /***
          * Filter list by search input
          * @param search
@@ -214,5 +226,4 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
             $location.path('/' +$scope.modelName.plural.toLowerCase());
         }
     }
-
 ]);
