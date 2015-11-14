@@ -1,16 +1,48 @@
 'use strict';
 
-angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Global', 'Articles', 'MeanUser', 'Circles',
-    function ($scope, $stateParams, $location, Global, Articles, MeanUser, Circles) {
-        $scope.global = Global;
+// TODO: rewrite model name
+/***
+ * Define model name
+ * @type {{single: string, plural: string}}
+ */
+var modelName = {
+    single: 'Article',
+    plural: 'Articles'
+};
 
+angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelName.plural + 'Controller', [
+    '$scope',
+    '$stateParams',
+    '$location',
+    'Global',
+    modelName.plural,
+    'MeanUser',
+    'Circles',
+    '$state',
+    function ($scope,
+              $stateParams,
+              $location,
+              Global,
+              Model,
+              MeanUser,
+              Circles,
+              $state) {
+
+        $scope.global = Global;
+        $scope.modelName = modelName;
         $scope.selectedItems = {};
         $scope.searchText = '';
-        $scope.articles = [];
 
-        $scope.hasAuthorization = function (article) {
-            if (!article || !article.user) return false;
-            return MeanUser.isAdmin || article.user._id === MeanUser.user._id;
+        $scope.item = {};
+        $scope.items = Model.query(
+            function (items) {
+                $scope.items = items;
+            });
+
+        /// start rewrite
+        $scope.hasAuthorization = function (item) {
+            if (!item || !item.user) return false;
+            return MeanUser.isAdmin || item.user._id === item.user._id;
         };
 
         $scope.availableCircles = [];
@@ -31,119 +63,175 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
             $scope.descendants = [];
         };
 
+        /// end rewrite
+
+        /***
+         * Create new item
+         * @param isValid
+         */
         $scope.create = function (isValid) {
             if (isValid) {
                 // $scope.article.permissions.push('test test');
-                var article = new Articles($scope.article);
+                var item = new Model($scope.item);
 
-                article.$save(function (response) {
-                    $location.path('articles/' + response._id);
+                item.$save(function (response) {
+                    $location.path($scope.modelName.plural.toLowerCase() + '/' + response._id);
                 });
 
-                $scope.article = {};
+                $scope.item = {};
 
             } else {
                 $scope.submitted = true;
             }
         };
 
-        $scope.remove = function (article) {
-            if (confirm('Are you sure you want to delete this article?')) {
-                if (article) {
-                    article.$remove(function (response) {
+        /***
+         * Remove item by id
+         * @param itemId
+         */
+        $scope.remove = function (itemId) {
+            if (confirm('Are you sure you want to delete this ' + $scope.modelName.single.toLowerCase() + '?')) {
+                if (itemId) {
 
-                        for (var i in $scope.articles) {
-                            if ($scope.articles[i] === article) {
-                                $scope.articles.splice(i, 1);
+                    Model.get({
+                        id: itemId
+                    }, function (item) {
+                        item.$remove(function (response) {
+
+                            for (var i in $scope.items) {
+                                if ($scope.items[i] === article) {
+                                    $scope.items.splice(i, 1);
+                                }
                             }
-                        }
-
-                        $location.path('articles');
+                            $location.path($scope.modelName.plural.toLowerCase());
+                        });
                     });
+
                 } else {
-                    $scope.article.$remove(function (response) {
-                        $location.path('articles');
+                    $scope.item.$remove(function (response) {
+                        $location.path('items');
                     });
                 }
             }
         };
 
+        /***
+         * Update current model
+         * @param isValid
+         */
         $scope.update = function (isValid) {
             if (isValid) {
-                var article = $scope.article;
-                if (!article.updated) {
-                    article.updated = [];
+                var item = $scope.item;
+                if (!item.updated) {
+                    item.updated = [];
                 }
-                article.updated.push(new Date().getTime());
+                item.updated.push(new Date().getTime());
 
-                article.$update(function () {
-                    $location.path('articles/' + article._id);
+                item.$update(function () {
+                    $location.path('items/' + item._id);
                 });
             } else {
                 $scope.submitted = true;
             }
         };
 
+        /***
+         * Get all model items
+         */
         $scope.find = function () {
-            Articles.query(function (articles) {
-                $scope.articles = articles;
-                angular.forEach($scope.articles, function(article){
-                    $scope.selectedItems[article.id] = false;
-                });
+            Model.query(function (items) {
+                $scope.items = items;
             });
         };
 
+        /***
+         * Get model by id
+         */
         $scope.findOne = function () {
-            Articles.get({
-                articleId: $stateParams.articleId
-            }, function (article) {
-                $scope.article = article;
+            Model.get({
+                id: $stateParams.id
+            }, function (model) {
+                $scope.item = model;
             });
         };
 
+        // TODO: define list columns in columnDefs prop. (notice than not all columns always required)
+        /***
+         * Define table options
+         * @type {{data: *, enableFiltering: boolean, useExternalFiltering: boolean, enableHorizontalScrollbar: number, columnDefs: *[]}}
+         */
         $scope.gridOptions = {
-            enableFiltering: true,
+            data: $scope.items,
+            enableFiltering: false,
             useExternalFiltering: true,
-            enableHorizontalScrollbar: 2,
-                columnDefs: [
-                { name: 'title' },
-                { name: 'content', enableFiltering: false },
-                { name: 'created'}
-            ],
-            onRegisterApi: function( gridApi ) {
-
-                $scope.gridApi = gridApi;
-                $scope.gridApi.core.on.filterChanged( $scope, function() {
-                    var grid = this.grid;
-                    if( grid.columns[1].filters[0].term === 'male' ) {
-                        $http.get('/data/100_male.json')
-                            .success(function(data) {
-                                $scope.gridOptions.data = data;
-                            });
-                    } else if ( grid.columns[1].filters[0].term === 'female' ) {
-
-                    } else {
-                        $http.get('/data/100.json')
-                            .success(function(data) {
-                                $scope.gridOptions.data = data;
-                            });
-                    }
-                });
-            }
+            enableHorizontalScrollbar: 0,
+            columnDefs: [
+                {
+                    field: 'title',
+                    name: 'Title'
+                },
+                {
+                    field: 'content',
+                    name: 'Content',
+                    enableFiltering: false
+                },
+                {
+                    field: 'created',
+                    name: 'Created',
+                    cellTemplate: '' +
+                    '<div class="ui-grid-cell-contents">{{ row.entity.created | date : "d/M/yyyy mm:H:ss"}}</div>'
+                },
+                {
+                    name: ' ',
+                    enableFiltering: false,
+                    cellTemplate: '' +
+                    '<div class="ui-grid-cell-contents">' +
+                    '   <a class="btn" ui-sref="view ' + $scope.modelName.single.toLowerCase() + '({id : row.entity._id})" uib-tooltip="View item">' +
+                    '       <i class="glyphicon glyphicon-list"></i>' +
+                    '   </a>' +
+                    '   <a class="btn" ui-sref="edit ' + $scope.modelName.single.toLowerCase() + '({id : row.entity._id})" uib-tooltip="Edit item">' +
+                    '       <i class="glyphicon glyphicon-edit"></i>' +
+                    '   </a>' +
+                    '   <a class="btn" data-ng-click="remove(row.entity._id);" uib-tooltip="Delete item">' +
+                    '       <i class="glyphicon glyphicon-trash"></i>' +
+                    '   </a>' +
+                    '</div>'
+                }
+            ]
         };
 
-
-        $scope.refreshData = function(search){
-
-            $scope.gridOptions.data = $scope.articles;
-
+        /***
+         * Filter list by search input
+         * @param search
+         */
+        $scope.refreshData = function (search) {
+            $scope.gridOptions.data = $scope.items;
             while (search) {
                 var oSearchArray = search.split(' ');
                 $scope.gridOptions.data = $filter('filter')($scope.gridOptions.data, oSearchArray[0], undefined);
                 oSearchArray.shift();
                 search = (oSearchArray.length !== 0) ? oSearchArray.join(' ') : '';
             }
-        }
+        };
 
+        /***
+         * Get title state by current state
+         * @returns {string}
+         */
+        $scope.getModelTitle = function () {
+
+            var stateName = $state.current.name.split(' ');
+
+            if (stateName[1] === $scope.modelName.single) {
+                switch (stateName[0]) {
+                    case 'create':
+                        return 'Create ' + $scope.modelName.single;
+                    case 'edit':
+                        return 'Edit ' + $scope.modelName.single;
+                    case 'view':
+                        return 'View ' + $scope.modelName.single;
+                }
+            }
+        };
     }
 ]);

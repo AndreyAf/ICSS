@@ -1,46 +1,51 @@
 'use strict';
 
-//Setting up route
-angular.module('mean.articles').config(['$stateProvider',
-  function($stateProvider) {
+// TODO: rewrite model name
+var modelName = {
+    single: 'Acticle',
+    plural: 'Articles'
+};
 
-    // states for my app
-    $stateProvider
-      .state('all articles', {
-        url: '/articles',
-        templateUrl: '/articles/views/list.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
-      })
-      .state('create article', {
-        url: '/articles/create',
-        templateUrl: '/articles/views/create.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
-      })
-      .state('edit article', {
-        url: '/articles/:articleId/edit',
-        templateUrl: '/articles/views/edit.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
-      })
-      .state('article by id', {
-        url: '/articles/:articleId',
-        templateUrl: '/articles/views/view.html',
-        resolve: {
-          loggedin: function(MeanUser) {
-            return MeanUser.checkLoggedin();
-          }
-        }
-      });
-  }
+// Setting up route module routes
+angular.module('mean.' + modelName.plural.toLocaleLowerCase()).config(['$stateProvider',
+    function ($stateProvider) {
+
+        $stateProvider
+            .state('all ' + modelName.plural.toLocaleLowerCase(), {
+                url: '/' + modelName.plural.toLocaleLowerCase(),
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/list.html',
+                resolve: {
+                    loggedin: function (MeanUser) {
+                        return MeanUser.checkLoggedin();
+                    }
+                }
+            })
+            .state('create ' + modelName.single.toLocaleLowerCase(), {
+                url: '/' + modelName.plural.toLocaleLowerCase() + '/create',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/create.html',
+                resolve: {
+                    loggedin: function (MeanUser) {
+                        return MeanUser.checkLoggedin();
+                    }
+                }
+            })
+            .state('edit ' + modelName.single.toLocaleLowerCase(), {
+                url: '/' + modelName.plural.toLocaleLowerCase() + '/:id/edit',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/edit.html',
+                resolve: {
+                    loggedin: function (MeanUser) {
+                        return MeanUser.checkLoggedin();
+                    }
+                }
+            })
+            .state('view ' + modelName.single.toLocaleLowerCase(), {
+                url: '/' + modelName.plural.toLocaleLowerCase() + '/:id',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/view.html',
+                resolve: {
+                    loggedin: function (MeanUser) {
+                        return MeanUser.checkLoggedin();
+                    }
+                }
+            });
+    }
 ]);
