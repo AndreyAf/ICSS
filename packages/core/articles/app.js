@@ -46,7 +46,7 @@ Articles.register(function (app, auth, database, circles, swagger) {
         global: true
     });
 
-    Articles.angularDependencies(["ui.grid","ngTouch","ngAnimate"]);
+    Articles.angularDependencies(["ngTouch", "ngAnimate", "ui.grid", "ui.grid.selection", "ui.grid.exporter"]);
 
     //We are adding a link to the main menu for all authenticated users
     Articles.menus.add({
