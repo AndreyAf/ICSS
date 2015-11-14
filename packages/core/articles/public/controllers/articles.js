@@ -80,7 +80,10 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                     }, function (item) {
                         item.$remove(function (response) {
 
-                            $scope.gridOptions.data.splice(index, 1);
+                            $scope.gridOptions.data = Model.query(
+                                function (items) {
+                                    return items;
+                                });
 
                             // Go to list
                             $location.path('/' + $scope.modelName.plural.toLowerCase());
@@ -90,7 +93,10 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 } else {
                     // TODO : rewrite
                     $scope.item.$remove(function (response) {
-                        $scope.gridOptions.data.splice(index, 1);
+                        $scope.gridOptions.data = Model.query(
+                            function (items) {
+                                return items;
+                            });
 
                         $location.path('/' + $scope.modelName.plural.toLowerCase());
                     });
@@ -203,22 +209,35 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
             }
         };
 
-        /***
-         * Get title state by current state
-         * @returns {string}
-         */
-        $scope.getModelTitle = function () {
+        $scope.state = {
+            title: null,
+            disableInput: false,
+            clickText: null,
+            clickFunction : null
+        };
+
+        $scope.getStateValues = function(){
 
             var stateName = $state.current.name.split(' ');
 
             if (stateName[1] == $scope.modelName.single.toLocaleLowerCase()) {
                 switch (stateName[0]) {
                     case "create":
-                        return 'Create ' + $scope.modelName.single;
+                        $scope.state.title =  'Create ' + $scope.modelName.single;
+                        $scope.state.clickText = 'Create';
+                        $scope.state.clickFunction = $scope.create;
+                        break;
                     case "edit":
-                        return 'Edit ' + $scope.modelName.single;
+                        $scope.state.title = 'Edit ' + $scope.modelName.single;
+                        $scope.state.clickText = 'Update';
+                        $scope.state.clickFunction = $scope.update;
+                        break;
                     case "view":
-                        return 'View ' + $scope.modelName.single;
+                        $scope.state.title = 'View ' + $scope.modelName.single;
+                        $scope.state.clickText = 'Edit';
+                        $scope.state.disableInput = true;
+                        $scope.state.clickFunction = $scope.goTo('edit');
+                        break;
                 }
             }
         };

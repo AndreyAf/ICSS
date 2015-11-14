@@ -1,11 +1,11 @@
-<section ng-controller="ArticlesController" ng-init="findOne()">
+<section ng-controller="ArticlesController" ng-init="findOne();getStateValues();">
     <form name="itemForm" class="form-horizontal" role="form" ng-submit="update(itemForm.$valid)" novalidate>
 
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <div class="panel-heading-title">
                     <span class="glyphicon glyphicon-edit"></span>
-                    <span class="panel-heading-title-text" ng-bind="getModelTitle()"></span>
+                    <span class="panel-heading-title-text" ng-bind="state.title"></span>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                                    class="form-control"
                                    ng-model="item.title"
                                    placeholder="Title"
-                                   ng-disabled="false"
+                                   ng-disabled="state.disableInput"
                                    required>
 
                             <div ng-show="submitted && itemForm.title.$invalid" class="help-block">
@@ -38,7 +38,7 @@
                                       rows="10"
                                       placeholder="Content"
                                       class="form-control"
-                                      ng-disabled="false"
+                                      ng-disabled="state.disableInput"
                                       required>
                             </textarea>
 
@@ -54,7 +54,7 @@
                     <div class="col-md-6">
                         <div class="col-md-9 col-md-push-3">
                             <a href="" ng-click="goTo('list')" class="btn btn-info">Back</a>
-                            <button type="submit" class="btn btn-warning">Update</button>
+                            <button class="btn btn-warning" ng-click="state.clickFunction()">{{state.clickText}}</button>
                         </div>
                     </div>
                 </div>
