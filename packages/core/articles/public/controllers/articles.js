@@ -47,9 +47,8 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
          * Create new item
          * @param isValid
          */
-        $scope.create = function (isValid) {
-            if (isValid) {
-                // $scope.article.permissions.push('test test');
+        $scope.create = function () {
+
                 var item = new Model($scope.item);
 
                 item.$save(function (response) {
@@ -62,9 +61,6 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
 
                 $scope.item = {};
 
-            } else {
-                $scope.submitted = true;
-            }
         };
 
         /***
@@ -108,25 +104,21 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
          * Update current model
          * @param isValid
          */
-        $scope.update = function (isValid) {
-            if (isValid) {
-                var item = $scope.item;
-                if (!item.updated) {
-                    item.updated = [];
-                }
+        $scope.update = function () {
+            // TODO: check if the current item is same as before
+                Model.get({
+                    id: $stateParams.id
+                }, function (model) {
+                    model.updated.push(new Date().getTime());
 
-                item.updated.push(new Date().getTime());
-
-                item.$update(function () {
-                    $scope.gridOptions.data = Model.query(
-                        function (items) {
-                            return items;
-                        });
-                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + item._id);
+                    model.$update(function () {
+                        $scope.gridOptions.data = Model.query(
+                            function (items) {
+                                return items;
+                            });
+                        $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + item._id);
+                    });
                 });
-            } else {
-                $scope.submitted = true;
-            }
         };
 
         /***
