@@ -28,6 +28,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
               Circles,
               $state) {
 
+        // get user , check role
         $scope.global = Global;
         $scope.modelName = modelName;
         $scope.selectedItems = {};
@@ -56,7 +57,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                     $scope.gridOptions.data.push(response);
 
                     // Go to view
-                    $location.path('/' +$scope.modelName.plural.toLowerCase() + '/' + response._id);
+                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + response._id);
                 });
 
                 $scope.item = {};
@@ -82,7 +83,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                             $scope.gridOptions.data.splice(index, 1);
 
                             // Go to list
-                            $location.path('/' +$scope.modelName.plural.toLowerCase());
+                            $location.path('/' + $scope.modelName.plural.toLowerCase());
                         });
                     });
 
@@ -91,7 +92,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                     $scope.item.$remove(function (response) {
                         $scope.gridOptions.data.splice(index, 1);
 
-                        $location.path('/' +$scope.modelName.plural.toLowerCase());
+                        $location.path('/' + $scope.modelName.plural.toLowerCase());
                     });
                 }
             }
@@ -111,11 +112,11 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 item.updated.push(new Date().getTime());
 
                 item.$update(function () {
-                    $scope.gridOptions.data =Model.query(
+                    $scope.gridOptions.data = Model.query(
                         function (items) {
-                           return items;
+                            return items;
                         });
-                    $location.path('/' +$scope.modelName.plural.toLowerCase()+'/' + item._id);
+                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + item._id);
                 });
             } else {
                 $scope.submitted = true;
@@ -210,20 +211,38 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
 
             var stateName = $state.current.name.split(' ');
 
-            if (stateName[1] === $scope.modelName.single) {
+            if (stateName[1] == $scope.modelName.single.toLocaleLowerCase()) {
                 switch (stateName[0]) {
-                    case 'create':
+                    case "create":
                         return 'Create ' + $scope.modelName.single;
-                    case 'edit':
+                    case "edit":
                         return 'Edit ' + $scope.modelName.single;
-                    case 'view':
+                    case "view":
                         return 'View ' + $scope.modelName.single;
                 }
             }
         };
 
-        $scope.openList = function(){
-            $location.path('/' +$scope.modelName.plural.toLowerCase());
+        $scope.openList = function () {
+            $location.path('/' + $scope.modelName.plural.toLowerCase());
+        };
+
+        $scope.goTo = function (state) {
+            switch (state) {
+                case "view":
+                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + item._id);
+                    break;
+                case "create":
+                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/create');
+                    break;
+                case "edit":
+                    $location.path('/' + $scope.modelName.plural.toLowerCase() + '/' + item._id + '/edit');
+                    break;
+                default :
+                case "list":
+                    $location.path('/' + $scope.modelName.plural.toLowerCase());
+                    break;
+            }
         }
     }
 ]);
