@@ -51,7 +51,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 var item = new Model($scope.item);
 
                 item.$save(function (response) {
-                    $location.path($scope.modelName.plural.toLowerCase() + '/' + response._id);
+                    $location.path('/' +$scope.modelName.plural.toLowerCase() + '/' + response._id);
                 });
 
                 $scope.item = {};
@@ -79,13 +79,13 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                                     $scope.items.splice(i, 1);
                                 }
                             }
-                            $location.path($scope.modelName.plural.toLowerCase());
+                            $location.path('/' +$scope.modelName.plural.toLowerCase());
                         });
                     });
 
                 } else {
                     $scope.item.$remove(function (response) {
-                        $location.path('items');
+                        $location.path('/' +$scope.modelName.plural.toLowerCase());
                     });
                 }
             }
@@ -104,7 +104,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 item.updated.push(new Date().getTime());
 
                 item.$update(function () {
-                    $location.path($scope.modelName.plural.toLowerCase()+'/' + item._id);
+                    $location.path('/' +$scope.modelName.plural.toLowerCase()+'/' + item._id);
                 });
             } else {
                 $scope.submitted = true;
