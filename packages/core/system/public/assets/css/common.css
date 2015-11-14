@@ -38,6 +38,7 @@
 
 footer {
     position: absolute;
+    bottom: 0;
     width: 100%;
     background: #e67e22;
     border-top: solid #d35400 5px;
