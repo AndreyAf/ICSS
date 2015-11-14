@@ -39,30 +39,6 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 $scope.items = items;
             });
 
-        /// start rewrite
-        $scope.hasAuthorization = function (item) {
-            if (!item || !item.user) return false;
-            return MeanUser.isAdmin || item.user._id === item.user._id;
-        };
-
-        $scope.availableCircles = [];
-
-        Circles.mine(function (acl) {
-            $scope.availableCircles = acl.allowed;
-            $scope.allDescendants = acl.descendants;
-        });
-
-        $scope.showDescendants = function (permission) {
-            var temp = $('.ui-select-container .btn-primary').text().split(' ');
-            temp.shift(); //remove close icon
-            var selected = temp.join(' ');
-            $scope.descendants = $scope.allDescendants[selected];
-        };
-
-        $scope.selectPermission = function () {
-            $scope.descendants = [];
-        };
-
         /// end rewrite
 
         /***
@@ -128,7 +104,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 item.updated.push(new Date().getTime());
 
                 item.$update(function () {
-                    $location.path('items/' + item._id);
+                    $location.path($scope.modelName.plural.toLowerCase()+'/' + item._id);
                 });
             } else {
                 $scope.submitted = true;
@@ -233,5 +209,10 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelN
                 }
             }
         };
+
+        $scope.openList = function(){
+            $location.path('/' +$scope.modelName.plural.toLowerCase());
+        }
     }
+
 ]);

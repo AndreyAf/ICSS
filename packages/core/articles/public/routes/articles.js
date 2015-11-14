@@ -22,7 +22,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).config(['$statePr
             })
             .state('create ' + modelName.single.toLocaleLowerCase(), {
                 url: '/' + modelName.plural.toLocaleLowerCase() + '/create',
-                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/create.html',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/model.html',
                 resolve: {
                     loggedin: function (MeanUser) {
                         return MeanUser.checkLoggedin();
@@ -31,7 +31,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).config(['$statePr
             })
             .state('edit ' + modelName.single.toLocaleLowerCase(), {
                 url: '/' + modelName.plural.toLocaleLowerCase() + '/:id/edit',
-                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/edit.html',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/model.html',
                 resolve: {
                     loggedin: function (MeanUser) {
                         return MeanUser.checkLoggedin();
@@ -40,7 +40,7 @@ angular.module('mean.' + modelName.plural.toLocaleLowerCase()).config(['$statePr
             })
             .state('view ' + modelName.single.toLocaleLowerCase(), {
                 url: '/' + modelName.plural.toLocaleLowerCase() + '/:id',
-                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/view.html',
+                templateUrl: '/' + modelName.plural.toLocaleLowerCase() + '/views/model.html',
                 resolve: {
                     loggedin: function (MeanUser) {
                         return MeanUser.checkLoggedin();
