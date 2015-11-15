@@ -43,7 +43,37 @@ var escapeProperty = function(value) {
  */
 
 var UserSchema = new Schema({
+  created: {
+    type: Date,
+    default: Date.now
+  },
   name: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  last_name: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  country: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  city: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  address: {
+    type: String,
+    required: true,
+    get: escapeProperty
+  },
+  // TODO add validator match phone number
+  phone_number: {
     type: String,
     required: true,
     get: escapeProperty
@@ -82,7 +112,10 @@ var UserSchema = new Schema({
   twitter: {},
   github: {},
   google: {},
-  linkedin: {}
+  linkedin: {},
+  updated: {
+    type: Array
+  }
 });
 
 /**
