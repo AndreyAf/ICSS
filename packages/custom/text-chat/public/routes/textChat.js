@@ -2,8 +2,8 @@
 
 // TODO: rewrite model name
 var modelName = {
-    single: 'Acticle',
-    plural: 'Articles'
+    single: 'TextChat',
+    plural: 'TextChat'
 };
 
 // Setting up route module routes

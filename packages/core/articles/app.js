@@ -18,6 +18,26 @@ Articles.register(function (app, auth, database, circles, swagger) {
 
     Articles.aggregateAsset('css', 'articles.css');
 
+    Articles.aggregateAsset('js', '../lib/angular-animate/angular-animate.min.js', {
+        global: true
+    });
+
+    Articles.aggregateAsset('js', '../lib/angular-touch/angular-touch.min.js', {
+        global: true
+    });
+
+    Articles.aggregateAsset('js', '../lib/CSV-JS/csv.js', {
+        global: true
+    });
+
+    Articles.aggregateAsset('js', '../lib/pdfmake/build/pdfmake.min.js', {
+        global: true
+    });
+
+    Articles.aggregateAsset('js', '../lib/pdfmake/build/vfs_fonts.js', {
+        global: true
+    });
+
     Articles.aggregateAsset('css', '../lib/angular-ui-grid/ui-grid.min.css', {
         global: true
     });
@@ -26,7 +46,7 @@ Articles.register(function (app, auth, database, circles, swagger) {
         global: true
     });
 
-    Articles.angularDependencies(["ui.grid"]);
+    Articles.angularDependencies(["ngTouch", "ngAnimate", "ui.grid", "ui.grid.selection", "ui.grid.exporter"]);
 
     //We are adding a link to the main menu for all authenticated users
     Articles.menus.add({

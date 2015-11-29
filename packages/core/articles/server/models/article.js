@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-
+// TODO: rewrite name and schema
 /**
  * Article Schema
  */

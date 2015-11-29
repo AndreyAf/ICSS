@@ -6,11 +6,13 @@
  * @type {{single: string, plural: string}}
  */
 var modelName = {
-    single: 'Article',
-    plural: 'Articles'
+    single: 'TextChat',
+    singleSmall: 'textChat',
+    plural: 'TextChats',
+    pluralSmall: 'textChats'
 };
 
-angular.module('mean.' + modelName.plural.toLocaleLowerCase()).controller(modelName.plural + 'Controller', [
+angular.module('mean.' + modelName.pluralSmall).controller(modelName.plural + 'Controller', [
     '$scope',
     '$stateParams',
     '$location',
