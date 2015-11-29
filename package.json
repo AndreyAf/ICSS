@@ -92,9 +92,5 @@
     "requirejs": "latest",
     "supertest": "latest",
     "through": "latest"
-  },
-  "scripts": {
-  "start": "node app",
-  "postinstall": "gulp default"
-}
+  }
 }
