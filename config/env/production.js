@@ -5,7 +5,7 @@
 
 module.exports = {
   // Replace <user>:<password> with your real user:pass
-  db: "mongodb://<ninickname>:<oneXone1>@ds059524.mongolab.com:59524/icss",
+    db: 'mongodb://ninickname:oneXone1@ds059524.mongolab.com:59524/icss',// + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/mean-test',
 
 
   dbOptions: {
